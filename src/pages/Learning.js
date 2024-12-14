@@ -3,9 +3,9 @@ import axios from "axios";
 
 const Learning = () => {
   const [query, setQuery] = useState("");
-  const [articles, setArticles] = useState([]);
+  
   const [videos, setVideos] = useState([]);
-  const [images, setImages] = useState([]);
+ 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -19,30 +19,19 @@ const Learning = () => {
     setLoading(true);
 
     try {
-      // Fetch Articles from Dev.to
-      const textResponse = await axios.get(
-        `https://dev.to/api/articles?tag=${query}`
-      );
+      
 
       // Fetch Videos from YouTube API
       const videoResponse = await axios.get(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=video&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`
       );
 
-      // Fetch Images from Unsplash API
-      const imageResponse = await axios.get(
-        `https://api.unsplash.com/search/photos?query=${query}&client_id=${process.env.REACT_APP_UNSPLASH_API_KEY}`
-      );
+      
 
-      // Filter Articles by relevance
-      const filteredArticles = textResponse.data.filter((article) =>
-        article.title.toLowerCase().includes(query.toLowerCase())
-      );
 
       // Update State
-      setArticles(filteredArticles);
       setVideos(videoResponse.data.items);
-      setImages(imageResponse.data.results);
+      
     } catch (err) {
       console.error("Error fetching resources:", err);
       setError("An error occurred while fetching resources. Please try again.");
@@ -86,25 +75,8 @@ const Learning = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div>
-          {/* Articles Section */}
-          <h2>Articles</h2>
-          {articles.length > 0 ? (
-            articles.map((article, index) => (
-              <div key={index}>
-                <a
-                  href={article.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "none", color: "#007BFF" }}
-                >
-                  {article.title}
-                </a>
-              </div>
-            ))
-          ) : (
-            <p>No articles found for "{query}".</p>
-          )}
+        <div style={{ padding: "20px" }}>
+       
 
           {/* Videos Section */}
           <h2>Videos</h2>
@@ -125,26 +97,7 @@ const Learning = () => {
             <p>No videos found for "{query}".</p>
           )}
 
-          {/* Images Section */}
-          <h2>Images</h2>
-          {images.length > 0 ? (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-              {images.map((image, index) => (
-                <img
-                  key={index}
-                  src={image.urls.small}
-                  alt={image.alt_description || "Image"}
-                  style={{
-                    width: "200px",
-                    height: "auto",
-                    borderRadius: "5px",
-                  }}
-                />
-              ))}
-            </div>
-          ) : (
-            <p>No images found for "{query}".</p>
-          )}
+          
         </div>
       )}
     </div>

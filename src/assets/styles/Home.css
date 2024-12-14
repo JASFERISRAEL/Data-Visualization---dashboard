@@ -1,0 +1,25 @@
+/* Home.css */
+.home-container {
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  #tsparticles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  
+  .content {
+    position: relative;
+    text-align: center;
+    color: #333;
+    z-index: 1; /* Content stays above particles */
+    padding: 50px;
+  }
+  
